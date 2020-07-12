@@ -1,12 +1,15 @@
+import pizzas, { State as PizzasState } from "./Ducks/pizzasDuck";
 import snackbar, { State as SnackbarState } from "./Ducks/snackbarDuck";
 
-// interface da store. Todas as redux (ducks) devem ter seu State declarado aqui
+// Interface da store. Todas as redux (ducks) devem ter seu State declarado aqui.
 export interface BWPizzaStore {
+  pizzas: PizzasState;
   snackbar: SnackbarState;
 }
 
-// a redux em si
+// Objeto da store (redux).
 const reducers: any = {
+  pizzas,
   snackbar,
 };
 

@@ -1,11 +1,24 @@
 import { put, takeLatest } from "redux-saga/effects";
-import { OPEN_SNACKBAR, OpenSnackbar } from "../Ducks/snackbarDuck";
 import { Action } from "../Models/ReduxModels";
+
+import { OPEN_SNACKBAR, OpenSnackbar } from "../Ducks/snackbarDuck";
+import {
+  GET_AVAILABLE_PIZZAS_FAILURE,
+  GET_RECOMMENDATION_FAILURE,
+} from "../Ducks/pizzasDuck";
 
 // retorna uma mensagem de acordo com o TYPE da action que deu erro
 // declarada no getAllFailuresSaga
 function getFailureMessage(type: string): string {
   switch (type) {
+    case GET_AVAILABLE_PIZZAS_FAILURE: {
+      return "Não foi possível pegar as pizzas disponíveis.";
+    }
+
+    case GET_RECOMMENDATION_FAILURE: {
+      return "Não foi possível pegar a recomendação.";
+    }
+
     default: {
       return "Ocorreu um erro. Por favor tente novamente.";
     }
@@ -57,6 +70,9 @@ export function* getAllSuccessSaga(action: Action<any>) {
 }
 
 export default [
-  takeLatest([], getAllFailuresSaga),
+  takeLatest(
+    [GET_AVAILABLE_PIZZAS_FAILURE, GET_RECOMMENDATION_FAILURE],
+    getAllFailuresSaga
+  ),
   takeLatest([], getAllSuccessSaga),
 ];

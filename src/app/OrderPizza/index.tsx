@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Route, useRouteMatch } from "react-router-dom";
 
 import "./styles.scss";
 
 import orderPizzaRoutes from "./order-pizza.routes";
+import {
+  getAvailablePizzas,
+  getRecommendation,
+} from "../Store/Ducks/pizzasDuck";
 
 interface Props {}
 
 const OrderPizza: React.FC<Props> = () => {
+  const dispatch = useDispatch();
   const router = useRouteMatch();
+
+  useEffect(() => {
+    dispatch(getAvailablePizzas({}));
+    dispatch(getRecommendation({}));
+  }, [dispatch]);
 
   return (
     <section className="order-pizza-container">
