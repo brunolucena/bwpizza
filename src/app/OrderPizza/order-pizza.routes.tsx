@@ -6,17 +6,17 @@ import EscolherTamanho from "./EscolherTamanho";
 
 const orderPizzaRoutes: RouteProps[] = [
   {
-    path: "/escolher-massa",
+    path: "escolher-massa",
     component: EscolherMassa,
     exact: true,
   },
   {
-    path: "/escolher-tamanho",
+    path: "escolher-tamanho",
     component: EscolherTamanho,
     exact: true,
   },
   {
-    path: "/",
+    path: "",
     component: EscolherRecheio,
     exact: true,
   },
