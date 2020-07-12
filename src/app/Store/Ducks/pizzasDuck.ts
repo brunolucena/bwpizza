@@ -10,14 +10,6 @@ import {
   GetRecommendationResponse,
 } from "../Models/PizzaModels";
 
-export type SnackbarStyle = "success" | "error";
-
-interface OpenSnackbarRequest {
-  message: string;
-  /** default: error */
-  style?: SnackbarStyle;
-}
-
 export const GET_AVAILABLE_PIZZAS = "GET_AVAILABLE_PIZZAS";
 export const GET_AVAILABLE_PIZZAS_FAILURE = "GET_AVAILABLE_PIZZAS_FAILURE";
 export const GET_AVAILABLE_PIZZAS_SUCCESS = "GET_AVAILABLE_PIZZAS_SUCCESS";

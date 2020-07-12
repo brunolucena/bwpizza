@@ -86,8 +86,33 @@ export interface Tamanho {
 export interface Recheio {
   id: string;
   name: string;
-  /** O preço de um recheio está relacionado aos tamanhos disponíveis */
+  /** O preço de um recheio está relacionado aos tamanhos disponíveis. */
   tamanhos: Tamanho[];
   description?: string;
-  additionalPrice?: number;
+}
+
+/**
+ * Interface utilizada para atualizar os dados da orderPizzaDuck.ts
+ */
+export interface SetOrderPizzaDataRequest {
+  error?: string;
+  loading?: boolean;
+  pizza?: Pizza;
+  orderPizzaResponse?: OrderPizzaResponse;
+}
+
+/**
+ * Dados do pedido.
+ */
+export interface OrderPizzaPrice {
+  total: number;
+  additionals: OrderPizzaAdditionals[];
+}
+
+/**
+ * Adicionais da pizza.
+ */
+export interface OrderPizzaAdditionals {
+  name: string;
+  price: number;
 }
