@@ -79,6 +79,7 @@ export interface State {
   loading: boolean;
   orderPizzaResponse: OrderPizzaResponse;
   pizza: Pizza;
+  promotionSelected: boolean;
   selectedTamanho: TypeTamanhos;
 }
 
@@ -101,6 +102,7 @@ const initialState: State = {
     recheio: [],
     selectedTamanho: "Grande",
   },
+  promotionSelected: false,
   selectedTamanho: "Grande",
 };
 
@@ -143,12 +145,14 @@ export default function reducer(state = initialState, action: Actions): State {
       return {
         ...state,
         pizza: newPizza,
+        promotionSelected: false,
       };
     }
 
     case SELECT_TAMANHO: {
       return {
         ...state,
+        promotionSelected: false,
         selectedTamanho: action.payload,
       };
     }
@@ -175,6 +179,7 @@ export default function reducer(state = initialState, action: Actions): State {
       return {
         ...state,
         pizza: newPizza,
+        promotionSelected: false,
       };
     }
 
