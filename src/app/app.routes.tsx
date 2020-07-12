@@ -12,7 +12,6 @@ const appRoutes: RouteProps[] = [
   {
     path: "/",
     component: OrderPizza,
-    exact: true,
   },
 ];
 
