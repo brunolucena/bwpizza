@@ -1,4 +1,5 @@
 import React from "react";
+
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CloseIcon from "@material-ui/icons/Close";
 import ErrorIcon from "@material-ui/icons/Error";
@@ -16,33 +17,33 @@ const variantIcon: any = {
   success: CheckCircleIcon,
   warning: WarningIcon,
   error: ErrorIcon,
-  info: InfoIcon
+  info: InfoIcon,
 };
 
-const useStyles1: any = makeStyles(theme => ({
+const useStyles1: any = makeStyles((theme) => ({
   success: {
-    backgroundColor: green[600]
+    backgroundColor: green[600],
   },
   error: {
-    backgroundColor: theme.palette.error.dark
+    backgroundColor: theme.palette.error.dark,
   },
   info: {
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
   },
   warning: {
-    backgroundColor: amber[700]
+    backgroundColor: amber[700],
   },
   icon: {
-    fontSize: 20
+    fontSize: 20,
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
   },
   message: {
     display: "flex",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 }));
 
 function MySnackbarContentWrapper(props: any) {
@@ -68,7 +69,7 @@ function MySnackbarContentWrapper(props: any) {
           onClick={onClose}
         >
           <CloseIcon className={classes.icon} />
-        </IconButton>
+        </IconButton>,
       ]}
       {...other}
     />
@@ -82,14 +83,14 @@ interface SnackbarProps {
   message: string;
 }
 
-const CustomSnackbar: React.FC<SnackbarProps> = props => {
+const CustomSnackbar: React.FC<SnackbarProps> = (props) => {
   const { message, opened, setOpened, snacbkarStyle } = props;
 
   return (
     <Snackbar
       anchorOrigin={{
         vertical: "bottom",
-        horizontal: "center"
+        horizontal: "center",
       }}
       open={opened}
       autoHideDuration={6000}
