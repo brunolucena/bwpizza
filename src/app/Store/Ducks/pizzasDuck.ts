@@ -89,6 +89,7 @@ export default function reducer(state = initialState, action: Actions): State {
     case GET_AVAILABLE_PIZZAS: {
       return {
         ...state,
+        loading: true,
       };
     }
     case GET_AVAILABLE_PIZZAS_FAILURE: {
@@ -110,6 +111,7 @@ export default function reducer(state = initialState, action: Actions): State {
     case GET_RECOMMENDATION: {
       return {
         ...state,
+        loading: true,
       };
     }
     case GET_RECOMMENDATION_FAILURE: {

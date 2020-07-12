@@ -117,6 +117,7 @@ export default function reducer(state = initialState, action: Actions): State {
     case ORDER_PIZZA: {
       return {
         ...state,
+        loading: true,
       };
     }
     case ORDER_PIZZA_FAILURE: {
