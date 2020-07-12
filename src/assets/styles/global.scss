@@ -1,0 +1,25 @@
+@import "./palette";
+@import "./variables";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #ffffff;
+
+  ::selection {
+    background: map-get($primary, 200);
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.has-anchor {
+  position: relative;
+}
