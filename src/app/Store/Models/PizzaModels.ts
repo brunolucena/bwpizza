@@ -105,8 +105,9 @@ export interface SetOrderPizzaDataRequest {
  * Dados do pedido.
  */
 export interface OrderPizzaPrice {
-  total: number;
   additionals: OrderPizzaAdditionals[];
+  recheio: number;
+  total: number;
 }
 
 /**

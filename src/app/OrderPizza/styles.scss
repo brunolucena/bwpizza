@@ -1,2 +1,23 @@
 .order-pizza-container {
+  padding: 100px;
+}
+
+.order-pizza-area {
+  max-width: 880px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+
+  > .top {
+    .recommendation-wrapper {
+    }
+  }
+
+  > .content {
+    > .left {
+    }
+
+    > .right {
+    }
+  }
 }

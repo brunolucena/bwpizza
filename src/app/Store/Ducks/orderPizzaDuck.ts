@@ -293,6 +293,7 @@ export function selectOrderPizzaPrice(state: State): OrderPizzaPrice {
 
   return {
     additionals,
+    recheio: highestRecheioPrice,
     total,
   };
 }
