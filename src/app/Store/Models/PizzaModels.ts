@@ -44,10 +44,12 @@ export interface OrderPizzaResponse {
   estimatedArrival?: Date | string;
   /** Texto sobre a entrega. Ex: "Tempo estimado de entrega: 1 hora". */
   estimatedArrivalText?: string;
+  orderId: string;
   /** Pontos ganhos pelo pedido. Pode ser 0. */
   pointsEarned: number;
   /** Mensagem sobre o retorno. Ex: Erro na requisição devido id da promoção errado. */
   message?: string;
+  viewId: string;
 }
 
 /**

@@ -1,2 +1,24 @@
 .order-success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+
+  .order-success {
+    max-width: 880px;
+    color: #555555;
+    text-align: center;
+
+    .points {
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+  }
 }

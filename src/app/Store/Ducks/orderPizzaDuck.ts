@@ -100,6 +100,8 @@ const initialState: State = {
     estimatedArrival: undefined,
     estimatedArrivalText: "",
     message: "",
+    orderId: "",
+    viewId: "",
   },
   pizza: {
     massa: {
@@ -142,9 +144,8 @@ export default function reducer(state = initialState, action: Actions): State {
     }
     case ORDER_PIZZA_SUCCESS: {
       return {
-        ...state,
-        error: "",
-        loading: false,
+        // Pedido deu certo então limpa os dados do pedido
+        ...initialState,
         orderPizzaResponse: action.payload.data,
       };
     }
