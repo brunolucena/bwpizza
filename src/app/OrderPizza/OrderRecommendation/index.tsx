@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import clsx from "clsx";
 
 import "./styles.scss";
 
@@ -10,7 +11,6 @@ import { formatCurrency } from "../../Core/Helpers/formatters";
 import { BWPizzaStore } from "../../Store";
 import { getRecommendation } from "../../Store/Ducks/pizzasDuck";
 import { setOrderPizzaData } from "../../Store/Ducks/orderPizzaDuck";
-import clsx from "clsx";
 
 interface Props {}
 
