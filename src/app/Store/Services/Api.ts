@@ -68,7 +68,7 @@ async function Api(action: Action<any>, noAuth?: boolean) {
   }
 
   let config: AxiosRequestConfig | undefined = {
-    withCredentials: true,
+    withCredentials: false,
   };
 
   // configura o bearer token caso necessário
