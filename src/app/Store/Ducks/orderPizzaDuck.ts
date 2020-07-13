@@ -283,7 +283,7 @@ export function toggleRecheio(data: Recheio): ToggleRecheio {
 /**
  * Retorna o step atual baseado na rota.
  */
-export function selectCurrentStep(pathname: string): number {
+export function selectActiveStepByPathname(pathname: string): number {
   if (pathname === "/") {
     return 0;
   } else if (pathname === "/escolher-tamanho") {

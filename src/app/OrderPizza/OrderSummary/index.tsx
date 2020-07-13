@@ -13,7 +13,7 @@ import { OrderPizzaAdditionals } from "../../Store/Models/PizzaModels";
 import {
   orderPizza,
   selectOrderPizzaPrice,
-  selectCurrentStep,
+  selectActiveStepByPathname,
   selectAllStepsValid,
 } from "../../Store/Ducks/orderPizzaDuck";
 
@@ -27,7 +27,7 @@ const OrderSummary: React.FC<Props> = () => {
     (state: BWPizzaStore) => state
   );
 
-  const currentStep = selectCurrentStep(location.pathname);
+  const currentStep = selectActiveStepByPathname(location.pathname);
 
   const price = selectOrderPizzaPrice(orderPizzaRedux, pizzas);
 

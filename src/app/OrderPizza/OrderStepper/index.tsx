@@ -10,6 +10,10 @@ import StepButton from "@material-ui/core/StepButton";
 import Stepper from "@material-ui/core/Stepper";
 
 import { BWPizzaStore } from "../../Store";
+import {
+  selectIsStepValid,
+  selectActiveStepByPathname,
+} from "../../Store/Ducks/orderPizzaDuck";
 
 interface Props {}
 
@@ -47,23 +51,13 @@ const OrderStepper: React.FC<Props> = () => {
 
   const { orderPizza } = useSelector((state: BWPizzaStore) => state);
 
-  const { pizza, selectedMassa, selectedTamanho } = orderPizza;
-
   /**
    * Retorna o activeStep de acordo com a rota.
    */
   function getActiveStep(): number {
-    const { pathname } = location;
+    const currentStep = selectActiveStepByPathname(location.pathname);
 
-    if (pathname === "/") {
-      return 0;
-    } else if (pathname === "/escolher-tamanho") {
-      return 1;
-    } else if (pathname === "/escolher-massa") {
-      return 2;
-    }
-
-    return 0;
+    return currentStep;
   }
 
   /**
@@ -83,36 +77,19 @@ const OrderStepper: React.FC<Props> = () => {
    * Verifica se um determinado passo foi completado.
    */
   function isCompleted(index: number): boolean {
-    /**
-     * Retorna true se o pelo menos um recheio já foi selecionado.
-     */
-    function isRecheioCompleted(): boolean {
-      return pizza.recheio.length > 0;
-    }
-
-    /**
-     * Retorna true se o tamanho já foi selecionado.
-     */
-    function isTamanhoCompleted(): boolean {
-      return !!selectedTamanho;
-    }
-
-    /**
-     * Retorna true se a massa já foi selecionada.
-     */
-    function isMassaCompleted(): boolean {
-      return !!selectedMassa;
-    }
-
     // Passo 1 - Recheio
     if (index === 0) {
-      return isRecheioCompleted();
-    } else if (index === 1) {
-      // Passo 2 - Tamanho
-      return isTamanhoCompleted();
-    } else if (index === 2) {
-      // Passo 3 - Massa
-      return isMassaCompleted();
+      return selectIsStepValid(orderPizza, 0);
+    }
+
+    // Passo 2 - Tamanho
+    if (index === 1) {
+      return selectIsStepValid(orderPizza, 1);
+    }
+
+    // Passo 3 - Massa
+    if (index === 2) {
+      return selectIsStepValid(orderPizza, 2);
     }
 
     return false;
