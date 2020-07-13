@@ -10,13 +10,14 @@ import { formatCurrency } from "../../Core/Helpers/formatters";
 import { BWPizzaStore } from "../../Store";
 import { getRecommendation } from "../../Store/Ducks/pizzasDuck";
 import { setOrderPizzaData } from "../../Store/Ducks/orderPizzaDuck";
+import clsx from "clsx";
 
 interface Props {}
 
 const OrderRecommendation: React.FC<Props> = () => {
   const dispatch = useDispatch();
 
-  const { pizzas } = useSelector((state: BWPizzaStore) => state);
+  const { orderPizza, pizzas } = useSelector((state: BWPizzaStore) => state);
 
   const { recommendation } = pizzas;
 
@@ -41,9 +42,13 @@ const OrderRecommendation: React.FC<Props> = () => {
     );
   }
 
+  const classes = clsx("order-recommendation-container", {
+    active: orderPizza.promotionSelected,
+  });
+
   return id ? (
     <ButtonBase onClick={handleClick}>
-      <section className="order-recommendation-container">
+      <section className={classes}>
         <div className="top">
           <h2>PIZZA DO DIA</h2>
           <h3>{text || `Compre a pizza do dia e ganhe ${points} pontos!`}</h3>
