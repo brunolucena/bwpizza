@@ -12,6 +12,7 @@ import {
   Pizza,
   Recheio,
   SetOrderPizzaDataRequest,
+  Tamanho,
   TypeTamanhos,
 } from "../Models/PizzaModels";
 
@@ -425,4 +426,32 @@ export function selectOrderPizzaPrice(
     recheio: highestRecheioPrice,
     total,
   };
+}
+
+export function selectPizzaTamanhos(state: State): Tamanho[] {
+  const tamanhos: Tamanho[] = [];
+
+  // Verifica dentro de cada recheio (um pizza pode ter mais de um)
+  // os tamanhos e coloca no array o que tiver o maior valor.
+  state.pizza.recheios.forEach((recheio) => {
+    recheio.tamanhos.forEach((tamanho) => {
+      const foundIndex = tamanhos.findIndex((t) => t.name === tamanho.name);
+
+      // Se não tiver um tamanho já salvo, coloca no array.
+      if (foundIndex === -1) {
+        tamanhos.push(tamanho);
+      } else {
+        // Se já tiver, verifica os preços e mantém o que tiver o maior preço.
+        const currentTamanho = tamanhos[foundIndex];
+
+        if (currentTamanho.price < tamanho.price) {
+          tamanhos.splice(foundIndex, 1);
+
+          tamanhos.push(tamanho);
+        }
+      }
+    });
+  });
+
+  return tamanhos;
 }
