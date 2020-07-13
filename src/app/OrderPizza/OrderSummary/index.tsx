@@ -31,7 +31,13 @@ const OrderSummary: React.FC<Props> = () => {
 
   const price = selectOrderPizzaPrice(orderPizzaRedux, pizzas);
 
-  const { orderPizzaResponse, pizza, promotionSelected } = orderPizzaRedux;
+  const {
+    orderPizzaResponse,
+    pizza,
+    promotionSelected,
+    selectedMassa,
+    selectedTamanho,
+  } = orderPizzaRedux;
   const { recommendation } = pizzas;
 
   const allStepsValid = selectAllStepsValid(orderPizzaRedux);
@@ -113,13 +119,13 @@ const OrderSummary: React.FC<Props> = () => {
         <div className="item">
           <span className="left">Tamanho: </span>
 
-          <span className="right">{pizza.selectedTamanho}</span>
+          <span className="right">{selectedTamanho}</span>
         </div>
 
         <div className="item">
           <span className="left">Massa: </span>
 
-          <span className="right">{pizza.massa.name}</span>
+          <span className="right">{selectedMassa}</span>
         </div>
       </div>
     );
