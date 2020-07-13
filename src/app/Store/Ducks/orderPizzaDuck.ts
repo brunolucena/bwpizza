@@ -330,7 +330,7 @@ export function selectIsStepValid(state: State, step: number): boolean {
    * Retorna true se o pelo menos um recheio já foi selecionado.
    */
   if (step === 0) {
-    return pizza.recheios.length > 0;
+    return pizza.recheios?.length > 0;
   }
 
   /**

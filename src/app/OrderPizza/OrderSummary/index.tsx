@@ -121,7 +121,7 @@ const OrderSummary: React.FC<Props> = () => {
           <span className="left">Sabor: </span>
 
           <span className="right">
-            {pizza.recheios.map((recheio, index) => {
+            {pizza.recheios?.map((recheio, index) => {
               if (index === 0) {
                 return recheio.name;
               } else {
