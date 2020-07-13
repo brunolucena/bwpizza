@@ -80,7 +80,8 @@ export interface State {
   orderPizzaResponse: OrderPizzaResponse;
   pizza: Pizza;
   promotionSelected: boolean;
-  selectedTamanho: TypeTamanhos;
+  selectedMassa: Massa | null;
+  selectedTamanho: TypeTamanhos | "";
 }
 
 const initialState: State = {
@@ -103,7 +104,8 @@ const initialState: State = {
     selectedTamanho: "Grande",
   },
   promotionSelected: false,
-  selectedTamanho: "Grande",
+  selectedMassa: null,
+  selectedTamanho: "",
 };
 
 export default function reducer(state = initialState, action: Actions): State {
@@ -147,12 +149,20 @@ export default function reducer(state = initialState, action: Actions): State {
         ...state,
         pizza: newPizza,
         promotionSelected: false,
+        selectedMassa: action.payload,
       };
     }
 
     case SELECT_TAMANHO: {
+      // Cria uma cópia da pizza no state.
+      const newPizza = { ...state.pizza };
+
+      // Coloca o novo tamanho selecionado.
+      newPizza.selectedTamanho = action.payload;
+
       return {
         ...state,
+        pizza: newPizza,
         promotionSelected: false,
         selectedTamanho: action.payload,
       };

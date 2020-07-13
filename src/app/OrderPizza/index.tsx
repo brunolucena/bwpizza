@@ -5,10 +5,7 @@ import { Route, useRouteMatch } from "react-router-dom";
 import "./styles.scss";
 
 import orderPizzaRoutes from "./order-pizza.routes";
-import {
-  getAvailablePizzas,
-  getRecommendation,
-} from "../Store/Ducks/pizzasDuck";
+import { getAvailablePizzas } from "../Store/Ducks/pizzasDuck";
 
 import OrderStepper from "./OrderStepper";
 import OrderSummary from "./OrderSummary";
@@ -20,9 +17,10 @@ const OrderPizza: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const router = useRouteMatch();
 
+  console.log({ router2: router });
+
   useEffect(() => {
     dispatch(getAvailablePizzas({}));
-    dispatch(getRecommendation({}));
   }, [dispatch]);
 
   return (
