@@ -6,7 +6,7 @@ export type Languages = "pt-BR";
  * um valor da moeda correspondente.
  * Default = "BRL".
  *
- * Ex: 10.99 => R$10,99
+ * Ex: 10.99 => R$ 10,99
  */
 export function formatCurrency(
   value: number | string,
