@@ -28,6 +28,9 @@ const EscolherTamanho: React.FC<Props> = () => {
 
   const tamanhos = selectPizzaTamanhos(orderPizza);
 
+  /**
+   * Coloca o tamanho selecionado na redux.
+   */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value: any = event.target.value;
 
