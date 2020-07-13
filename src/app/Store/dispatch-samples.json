@@ -1,0 +1,28 @@
+[
+  {
+    "type": "SET_ORDER_PIZZA_DATA",
+    "payload": {
+      "error": "",
+      "loading": false,
+      "orderPizzaResponse": {
+        "pointsEarned": 0,
+        "success": false,
+        "estimatedArrival": null,
+        "estimatedArrivalText": "",
+        "message": ""
+      },
+      "pizza": {
+        "massa": {
+          "additionalPrice": 0,
+          "id": "",
+          "name": "Tradicional"
+        },
+        "recheio": [],
+        "selectedTamanho": "Grande"
+      },
+      "promotionSelected": false,
+      "selectedMassa": null,
+      "selectedTamanho": ""
+    }
+  }
+]

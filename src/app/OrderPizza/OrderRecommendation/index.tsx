@@ -35,6 +35,8 @@ const OrderRecommendation: React.FC<Props> = () => {
       setOrderPizzaData({
         pizza,
         promotionSelected: true,
+        selectedMassa: pizza.massa,
+        selectedTamanho: pizza.selectedTamanho,
       })
     );
   }
