@@ -27,8 +27,10 @@ const OrderSummary: React.FC<Props> = () => {
     (state: BWPizzaStore) => state
   );
 
+  // Pega o número do step atual. Ex: 0.
   const currentStep = selectActiveStepByPathname(location.pathname);
 
+  // Pega o objeto com os preços do pedido.
   const price = selectOrderPizzaPrice(orderPizzaRedux, pizzas);
 
   const {
@@ -40,8 +42,12 @@ const OrderSummary: React.FC<Props> = () => {
   } = orderPizzaRedux;
   const { recommendation } = pizzas;
 
+  // Verifica se todos os passos estão válidos.
   const allStepsValid = selectAllStepsValid(orderPizzaRedux);
 
+  /**
+   * Dispara para a API o pedido.
+   */
   function handleMakeOrder() {
     dispatch(
       orderPizza({
@@ -53,6 +59,9 @@ const OrderSummary: React.FC<Props> = () => {
   }
 
   function renderButton() {
+    /**
+     * Pega o texto do botão de acordo com o passo atual.
+     */
     const getButtonText = (): string => {
       switch (currentStep) {
         case 0:
@@ -70,6 +79,10 @@ const OrderSummary: React.FC<Props> = () => {
       }
     };
 
+    /**
+     * Se estiver no último passo, dispara a ação de fazer o pedido.
+     * Se não avança pro próximo passo.
+     */
     const handleClick = () => {
       let to = "/";
 
@@ -86,6 +99,8 @@ const OrderSummary: React.FC<Props> = () => {
       history.push(to);
     };
 
+    // Se estiver no último passo mas ainda faltar alguma informação,
+    // desativa o botão.
     const disabled = currentStep === 2 && !allStepsValid;
 
     return (
@@ -125,7 +140,7 @@ const OrderSummary: React.FC<Props> = () => {
         <div className="item">
           <span className="left">Massa: </span>
 
-          <span className="right">{selectedMassa}</span>
+          <span className="right">{selectedMassa?.name}</span>
         </div>
       </div>
     );
@@ -137,9 +152,9 @@ const OrderSummary: React.FC<Props> = () => {
 
       return (
         <div className="item">
-          <span className="left">{name}</span>
+          <span className="left">{name}: </span>
 
-          <span className="right">+ {formatCurrency(price)}</span>
+          <span className="right">+{formatCurrency(price)}</span>
         </div>
       );
     }
@@ -166,6 +181,8 @@ const OrderSummary: React.FC<Props> = () => {
     );
   }
 
+  // Ao realizar um pedido com sucesso, redireciona para a
+  // página de sucesso.
   if (orderPizzaResponse.success) {
     return <Redirect to="/pedido-sucesso" />;
   }
