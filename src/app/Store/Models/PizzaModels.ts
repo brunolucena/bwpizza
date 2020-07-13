@@ -58,7 +58,7 @@ export interface OrderPizzaResponse {
  */
 export interface Pizza {
   massa: Massa;
-  recheio: Recheio[];
+  recheios: Recheio[];
   selectedTamanho: TypeTamanhos;
 }
 
@@ -97,11 +97,22 @@ export interface Recheio {
 export interface SetOrderPizzaDataRequest {
   error?: string;
   loading?: boolean;
+  doisRecheios?: boolean;
   orderPizzaResponse?: OrderPizzaResponse;
   pizza?: Pizza;
   promotionSelected?: boolean;
   selectedMassa?: Massa | null;
   selectedTamanho?: TypeTamanhos | "";
+}
+
+/**
+ * Interface utilizada para atualizar os dados da pizzasDuck.ts
+ */
+export interface SetPizzasDataRequest {
+  error?: string;
+  loading?: boolean;
+  availablePizzas?: GetAvailablePizzasResponse;
+  recommendation?: GetRecommendationResponse;
 }
 
 /**

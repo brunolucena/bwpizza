@@ -8,6 +8,7 @@ import {
   GetAvailablePizzasResponse,
   GetRecommendationRequest,
   GetRecommendationResponse,
+  SetPizzasDataRequest,
 } from "../Models/PizzaModels";
 
 export const GET_AVAILABLE_PIZZAS = "GET_AVAILABLE_PIZZAS";
@@ -17,6 +18,8 @@ export const GET_AVAILABLE_PIZZAS_SUCCESS = "GET_AVAILABLE_PIZZAS_SUCCESS";
 export const GET_RECOMMENDATION = "GET_RECOMMENDATION";
 export const GET_RECOMMENDATION_FAILURE = "GET_RECOMMENDATION_FAILURE";
 export const GET_RECOMMENDATION_SUCCESS = "GET_RECOMMENDATION_SUCCESS";
+
+export const SET_PIZZAS_DATA = "SET_PIZZAS_DATA";
 
 export interface GetAvailablePizzas {
   type: typeof GET_AVAILABLE_PIZZAS;
@@ -44,13 +47,19 @@ export interface GetRecommendationSuccess {
   payload: BaseResponse<GetRecommendationResponse>;
 }
 
+export interface SetPizzasData {
+  type: typeof SET_PIZZAS_DATA;
+  payload: SetPizzasDataRequest;
+}
+
 export type Actions =
   | GetAvailablePizzas
   | GetAvailablePizzasFailure
   | GetAvailablePizzasSuccess
   | GetRecommendation
   | GetRecommendationFailure
-  | GetRecommendationSuccess;
+  | GetRecommendationSuccess
+  | SetPizzasData;
 
 export interface State {
   error: string;
@@ -75,7 +84,7 @@ const initialState: State = {
         name: "Tradicional",
         description: "",
       },
-      recheio: [],
+      recheios: [],
       selectedTamanho: "Grande",
     },
     points: 0,
@@ -130,6 +139,13 @@ export default function reducer(state = initialState, action: Actions): State {
       };
     }
 
+    case SET_PIZZAS_DATA: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+
     default: {
       return state;
     }
@@ -163,5 +179,12 @@ export function getRecommendation(
         data,
       },
     },
+  };
+}
+
+export function setPizzasData(data: SetPizzasDataRequest): SetPizzasData {
+  return {
+    type: SET_PIZZAS_DATA,
+    payload: data,
   };
 }

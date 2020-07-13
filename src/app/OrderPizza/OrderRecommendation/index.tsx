@@ -51,8 +51,8 @@ const OrderRecommendation: React.FC<Props> = () => {
 
         <div className="content">
           <div className="item">
-            Pizza sabor{pizza.recheio.length > 1 && "es"}{" "}
-            {pizza.recheio.map((recheio, index) => {
+            Pizza sabor{pizza.recheios?.length > 1 && "es"}{" "}
+            {pizza.recheios?.map((recheio, index) => {
               if (index === 0) {
                 return recheio.name;
               } else {

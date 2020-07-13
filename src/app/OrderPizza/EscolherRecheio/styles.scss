@@ -1,2 +1,11 @@
 .escolher-recheio-container {
+  > .top {
+    margin-bottom: 30px;
+  }
+
+  .escolher-recheio-form-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
 }

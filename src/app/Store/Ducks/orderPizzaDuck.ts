@@ -80,6 +80,7 @@ export type Actions =
 export interface State {
   error: string;
   loading: boolean;
+  doisRecheios: boolean;
   orderPizzaResponse: OrderPizzaResponse;
   pizza: Pizza;
   /** Caso tenha qualquer alteração na pizza, a promoção é retirada */
@@ -91,6 +92,7 @@ export interface State {
 const initialState: State = {
   error: "",
   loading: false,
+  doisRecheios: false,
   orderPizzaResponse: {
     pointsEarned: 0,
     success: false,
@@ -104,7 +106,7 @@ const initialState: State = {
       id: "",
       name: "Tradicional",
     },
-    recheio: [],
+    recheios: [],
     selectedTamanho: "Grande",
   },
   promotionSelected: false,
@@ -190,16 +192,18 @@ export default function reducer(state = initialState, action: Actions): State {
       const newPizza = { ...state.pizza };
 
       // Verifica se o recheio já está adicionado na pizza
-      const foundIndex = state.pizza.recheio.findIndex(
+      const foundIndex = state.pizza.recheios.findIndex(
         (r) => r.id === recheio.id
       );
 
       // Se o recheio não estiver adicionado na pizza, adiciona.
       if (foundIndex === -1) {
-        newPizza.recheio.push(recheio);
+        newPizza.recheios.push(recheio);
       } else {
         // Se já estiver adicionado, retira.
-        newPizza.recheio.filter((r) => r.id !== recheio.id);
+        newPizza.recheios = newPizza.recheios.filter(
+          (r) => r.id !== recheio.id
+        );
       }
 
       return {
@@ -282,7 +286,7 @@ export function toggleRecheio(data: Recheio): ToggleRecheio {
   };
 }
 
-// selectors
+// ---- Selectors ----
 
 /**
  * Retorna o step atual baseado na rota.
@@ -300,6 +304,20 @@ export function selectActiveStepByPathname(pathname: string): number {
 }
 
 /**
+ * Retorna se um determinado recheio está selecionado.
+ */
+export function selectIsRecheioActive(
+  state: State,
+  recheioId: string
+): boolean {
+  const foundIndex = state.pizza.recheios.findIndex(
+    (recheio) => recheio.id === recheioId
+  );
+
+  return foundIndex > -1;
+}
+
+/**
  * Verifica se as condições para a conclusão de um determinado passo
  * foram atingidas.
  */
@@ -310,7 +328,7 @@ export function selectIsStepValid(state: State, step: number): boolean {
    * Retorna true se o pelo menos um recheio já foi selecionado.
    */
   if (step === 0) {
-    return pizza.recheio.length > 0;
+    return pizza.recheios.length > 0;
   }
 
   /**
@@ -367,7 +385,7 @@ export function selectOrderPizzaPrice(
 
   // Transforma o array de recheios em um array somente com os preços
   // de cada recheio de acordo com o tamanho selecionado.
-  const recheiosPrices = pizza.recheio.map((recheio) => {
+  const recheiosPrices = pizza.recheios.map((recheio) => {
     const tamanho = recheio.tamanhos.find((t) => t.name === selectedTamanho);
 
     return tamanho?.price || 0;

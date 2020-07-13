@@ -1,5 +1,15 @@
 [
   {
+    "type": "GET_AVAILABLE_PIZZAS",
+    "payload": {
+      "request": {
+        "method": "GET",
+        "url": "/GetAvailablePizzas",
+        "data": {}
+      }
+    }
+  },
+  {
     "type": "SET_ORDER_PIZZA_DATA",
     "payload": {
       "error": "",
@@ -17,7 +27,7 @@
           "id": "",
           "name": "Tradicional"
         },
-        "recheio": [],
+        "recheios": [],
         "selectedTamanho": "Grande"
       },
       "promotionSelected": false,
