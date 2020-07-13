@@ -117,6 +117,10 @@ export default function reducer(state = initialState, action: Actions): State {
     case CLEAR_ORDER_PIZZA: {
       return {
         ...initialState,
+        orderPizzaResponse: {
+          ...state.orderPizzaResponse,
+          success: false,
+        },
       };
     }
 
