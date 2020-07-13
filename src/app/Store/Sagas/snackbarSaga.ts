@@ -6,6 +6,7 @@ import {
   GET_AVAILABLE_PIZZAS_FAILURE,
   GET_RECOMMENDATION_FAILURE,
 } from "../Ducks/pizzasDuck";
+import { ORDER_PIZZA_FAILURE } from "../Ducks/orderPizzaDuck";
 
 // retorna uma mensagem de acordo com o TYPE da action que deu erro
 // declarada no getAllFailuresSaga
@@ -17,6 +18,10 @@ function getFailureMessage(type: string): string {
 
     case GET_RECOMMENDATION_FAILURE: {
       return "Não foi possível pegar a recomendação.";
+    }
+
+    case ORDER_PIZZA_FAILURE: {
+      return "Não foi possível concluir seu pedido. Tente novamente.";
     }
 
     default: {
@@ -71,7 +76,11 @@ export function* getAllSuccessSaga(action: Action<any>) {
 
 export default [
   takeLatest(
-    [GET_AVAILABLE_PIZZAS_FAILURE, GET_RECOMMENDATION_FAILURE],
+    [
+      GET_AVAILABLE_PIZZAS_FAILURE,
+      GET_RECOMMENDATION_FAILURE,
+      ORDER_PIZZA_FAILURE,
+    ],
     getAllFailuresSaga
   ),
   takeLatest([], getAllSuccessSaga),
