@@ -34,9 +34,9 @@ export interface GetRecommendationResponse {
 export interface OrderPizzaRequest {
   pizza: Pizza;
   /** Id recebido no GetRecommendation. */
-  promotionId: string;
+  promotionId?: string;
   /** Price recebido no GetRecommendation. */
-  promotionalPrice: number;
+  promotionalPrice?: number;
 }
 export interface OrderPizzaResponse {
   success: boolean;

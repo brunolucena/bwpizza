@@ -23,8 +23,8 @@ export const ORDER_PIZZA = "ORDER_PIZZA";
 export const ORDER_PIZZA_FAILURE = "ORDER_PIZZA_FAILURE";
 export const ORDER_PIZZA_SUCCESS = "ORDER_PIZZA_SUCCESS";
 
-export const SELECT_MASSA = "SELECT_MASSA";
-export const SELECT_TAMANHO = "SELECT_TAMANHO";
+export const SET_MASSA = "SET_MASSA";
+export const SET_TAMANHO = "SET_TAMANHO";
 
 export const SET_ORDER_PIZZA_DATA = "SET_ORDER_PIZZA_DATA";
 
@@ -47,13 +47,13 @@ export interface OrderPizzaSuccess {
   payload: BaseResponse<OrderPizzaResponse>;
 }
 
-export interface SelectMassa {
-  type: typeof SELECT_MASSA;
+export interface SetMassa {
+  type: typeof SET_MASSA;
   payload: Massa;
 }
 
-export interface SelectTamanho {
-  type: typeof SELECT_TAMANHO;
+export interface SetTamanho {
+  type: typeof SET_TAMANHO;
   payload: TypeTamanhos;
 }
 
@@ -72,8 +72,8 @@ export type Actions =
   | OrderPizza
   | OrderPizzaFailure
   | OrderPizzaSuccess
-  | SelectMassa
-  | SelectTamanho
+  | SetMassa
+  | SetTamanho
   | SetOrderPizzaData
   | ToggleRecheio;
 
@@ -142,7 +142,7 @@ export default function reducer(state = initialState, action: Actions): State {
       };
     }
 
-    case SELECT_MASSA: {
+    case SET_MASSA: {
       // Cria uma cópia da pizza no state.
       const newPizza = { ...state.pizza };
 
@@ -157,7 +157,7 @@ export default function reducer(state = initialState, action: Actions): State {
       };
     }
 
-    case SELECT_TAMANHO: {
+    case SET_TAMANHO: {
       // Cria uma cópia da pizza no state.
       const newPizza = { ...state.pizza };
 
@@ -239,9 +239,9 @@ export function orderPizza(data: OrderPizzaRequest): OrderPizza {
 /**
  * Seleciona a massa da pizza.
  */
-export function selectMassa(data: Massa): SelectMassa {
+export function setMassa(data: Massa): SetMassa {
   return {
-    type: SELECT_MASSA,
+    type: SET_MASSA,
     payload: data,
   };
 }
@@ -249,9 +249,9 @@ export function selectMassa(data: Massa): SelectMassa {
 /**
  * Seleciona o tamanho da pizza.
  */
-export function selectTamanho(data: TypeTamanhos): SelectTamanho {
+export function setTamanho(data: TypeTamanhos): SetTamanho {
   return {
-    type: SELECT_TAMANHO,
+    type: SET_TAMANHO,
     payload: data,
   };
 }
@@ -279,6 +279,66 @@ export function toggleRecheio(data: Recheio): ToggleRecheio {
 }
 
 // selectors
+
+/**
+ * Retorna o step atual baseado na rota.
+ */
+export function selectCurrentStep(pathname: string): number {
+  if (pathname === "/") {
+    return 0;
+  } else if (pathname === "/escolher-tamanho") {
+    return 1;
+  } else if (pathname === "/escolher-massa") {
+    return 2;
+  }
+
+  return 0;
+}
+
+/**
+ * Verifica se as condições para a conclusão de um determinado passo
+ * foram atingidas.
+ */
+export function selectIsStepValid(state: State, step: number): boolean {
+  const { pizza, selectedMassa, selectedTamanho } = state;
+
+  /**
+   * Retorna true se o pelo menos um recheio já foi selecionado.
+   */
+  if (step === 0) {
+    return pizza.recheio.length > 0;
+  }
+
+  /**
+   * Retorna true se o tamanho já foi selecionado.
+   */
+  if (step === 1) {
+    return !!selectedTamanho;
+  }
+
+  /**
+   * Retorna true se a massa já foi selecionada.
+   */
+  if (step === 2) {
+    return !!selectedMassa;
+  }
+
+  return false;
+}
+
+/**
+ * Verifica se todas as condições para realizar um pedido
+ * foram atingidas.
+ */
+export function selectAllStepsValid(state: State): boolean {
+  const step1Valid = selectIsStepValid(state, 0);
+  const step2Valid = selectIsStepValid(state, 1);
+  const step3Valid = selectIsStepValid(state, 2);
+
+  const allValid = step1Valid && step2Valid && step3Valid;
+
+  return allValid;
+}
 
 /**
  * Retorna um objeto contendo o valor total da pizza e um array

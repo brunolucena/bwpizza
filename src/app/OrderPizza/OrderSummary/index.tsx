@@ -1,48 +1,123 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useHistory, useLocation, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./styles.scss";
+
+import ButtonBase from "@material-ui/core/ButtonBase";
 
 import { formatCurrency } from "../../Core/Helpers/formatters";
 
 import { BWPizzaStore } from "../../Store";
 import { OrderPizzaAdditionals } from "../../Store/Models/PizzaModels";
-import { selectOrderPizzaPrice } from "../../Store/Ducks/orderPizzaDuck";
+import {
+  orderPizza,
+  selectOrderPizzaPrice,
+  selectCurrentStep,
+  selectAllStepsValid,
+} from "../../Store/Ducks/orderPizzaDuck";
 
 interface Props {}
 
 const OrderSummary: React.FC<Props> = () => {
-  const { orderPizza, pizzas } = useSelector((state: BWPizzaStore) => state);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+  const { orderPizza: orderPizzaRedux, pizzas } = useSelector(
+    (state: BWPizzaStore) => state
+  );
 
-  const price = selectOrderPizzaPrice(orderPizza, pizzas);
+  const currentStep = selectCurrentStep(location.pathname);
 
-  const { pizza } = orderPizza;
+  const price = selectOrderPizzaPrice(orderPizzaRedux, pizzas);
+
+  const { orderPizzaResponse, pizza, promotionSelected } = orderPizzaRedux;
+  const { recommendation } = pizzas;
+
+  const allStepsValid = selectAllStepsValid(orderPizzaRedux);
+
+  function handleMakeOrder() {
+    dispatch(
+      orderPizza({
+        pizza,
+        promotionId: promotionSelected ? recommendation.id : "",
+        promotionalPrice: promotionSelected ? recommendation.price : 0,
+      })
+    );
+  }
+
+  function renderButton() {
+    const getButtonText = (): string => {
+      switch (currentStep) {
+        case 0:
+        case 1: {
+          return "AVANÇAR";
+        }
+
+        case 2: {
+          return "FINALIZAR PEDIDO";
+        }
+
+        default: {
+          return "AVANÇAR";
+        }
+      }
+    };
+
+    const handleClick = () => {
+      let to = "/";
+
+      if (currentStep === 0) {
+        to = "/escolher-tamanho";
+      } else if (currentStep === 1) {
+        to = "/escolher-massa";
+      } else {
+        handleMakeOrder();
+
+        return;
+      }
+
+      history.push(to);
+    };
+
+    const disabled = currentStep === 2 && !allStepsValid;
+
+    return (
+      <ButtonBase
+        className="button-avancar"
+        disabled={disabled}
+        onClick={handleClick}
+      >
+        <div>{getButtonText()}</div>
+      </ButtonBase>
+    );
+  }
 
   function renderPizzaDetails() {
     return (
       <div className="pizza-details">
         <div className="item">
-          <span className="left">Sabor:</span>
+          <span className="left">Sabor: </span>
 
           <span className="right">
             {pizza.recheio.map((recheio, index) => {
               if (index === 0) {
-                return recheio;
+                return recheio.name;
               } else {
-                return ` + ${recheio}`;
+                return ` + ${recheio.name}`;
               }
             })}
           </span>
         </div>
 
         <div className="item">
-          <span className="left">Tamanho:</span>
+          <span className="left">Tamanho: </span>
 
           <span className="right">{pizza.selectedTamanho}</span>
         </div>
 
         <div className="item">
-          <span className="left">Massa:</span>
+          <span className="left">Massa: </span>
 
           <span className="right">{pizza.massa.name}</span>
         </div>
@@ -65,20 +140,28 @@ const OrderSummary: React.FC<Props> = () => {
 
     return (
       <div className="pizza-price-wrapper">
-        <span className="total">{formatCurrency(price.total)}</span>
+        <span className="total">Total: {formatCurrency(price.total)}</span>
 
         <div className="price-details">
           {price.recheio > 0 && (
             <div className="item">
-              <span className="left">Pizza:</span>
+              <span className="left">Pizza: </span>
               <span className="right">{formatCurrency(price.recheio)}</span>
             </div>
           )}
 
-          {price.additionals.map((additional) => renderAdditional(additional))}
+          {price.additionals.length > 0
+            ? price.additionals.map((additional) =>
+                renderAdditional(additional)
+              )
+            : "S/ adicionais"}
         </div>
       </div>
     );
+  }
+
+  if (orderPizzaResponse.success) {
+    return <Redirect to="/pedido-sucesso" />;
   }
 
   return (
@@ -88,6 +171,7 @@ const OrderSummary: React.FC<Props> = () => {
       <div className="content">
         {renderPizzaDetails()}
         {renderPizzaPriceDetails()}
+        {renderButton()}
       </div>
     </section>
   );

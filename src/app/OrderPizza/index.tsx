@@ -17,8 +17,6 @@ const OrderPizza: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const router = useRouteMatch();
 
-  console.log({ router2: router });
-
   useEffect(() => {
     dispatch(getAvailablePizzas({}));
   }, [dispatch]);

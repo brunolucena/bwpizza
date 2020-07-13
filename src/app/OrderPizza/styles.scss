@@ -12,10 +12,12 @@
   border: 1px solid #ccc;
   border-radius: 3px;
 
-  > .top {
-  }
-
   > .content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    margin-top: 15px;
+    padding: 0 32px 32px;
+
     > .left {
     }
 
