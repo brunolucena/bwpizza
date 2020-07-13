@@ -7,7 +7,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import reducers from "./index";
 
 const persistConfig = {
-  key: "root",
+  key: "bwpizza",
   storage,
 };
 
