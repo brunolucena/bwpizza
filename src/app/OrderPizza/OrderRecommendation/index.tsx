@@ -3,100 +3,78 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "./styles.scss";
 
+import { ButtonBase } from "@material-ui/core";
+
 import { formatCurrency } from "../../Core/Helpers/formatters";
 
 import { BWPizzaStore } from "../../Store";
-import { OrderPizzaAdditionals } from "../../Store/Models/PizzaModels";
 import { getRecommendation } from "../../Store/Ducks/pizzasDuck";
-import { selectOrderPizzaPrice } from "../../Store/Ducks/orderPizzaDuck";
+import { setOrderPizzaData } from "../../Store/Ducks/orderPizzaDuck";
 
 interface Props {}
 
 const OrderRecommendation: React.FC<Props> = () => {
   const dispatch = useDispatch();
 
-  const { orderPizza } = useSelector((state: BWPizzaStore) => state);
+  const { pizzas } = useSelector((state: BWPizzaStore) => state);
 
-  const price = selectOrderPizzaPrice(orderPizza);
+  const { recommendation } = pizzas;
 
-  const { pizza } = orderPizza;
+  const { id, pizza, points, price, text } = recommendation;
 
   useEffect(() => {
     dispatch(getRecommendation({}));
   }, [dispatch]);
 
-  function renderPizzaDetails() {
-    return (
-      <div className="pizza-details">
-        <div className="item">
-          <span className="left">Sabor:</span>
+  /**
+   * Coloca a pizza da promoção no pedido e define a promoção
+   * como true.
+   */
+  function handleClick() {
+    dispatch(
+      setOrderPizzaData({
+        pizza,
+        promotionSelected: true,
+      })
+    );
+  }
 
-          <span className="right">
+  return id ? (
+    <ButtonBase onClick={handleClick}>
+      <section className="order-recommendation-container">
+        <div className="top">
+          <h2>PIZZA DO DIA</h2>
+          <h3>{text || `Compre a pizza do dia e ganhe ${points} pontos!`}</h3>
+        </div>
+
+        <div className="content">
+          <div className="item">
+            Pizza sabor{pizza.recheio.length > 1 && "es"}{" "}
             {pizza.recheio.map((recheio, index) => {
               if (index === 0) {
-                return recheio;
+                return recheio.name;
               } else {
-                return ` + ${recheio}`;
+                return ` e ${recheio.name}`;
               }
             })}
-          </span>
+          </div>
+
+          <div className="item">Tamanho {pizza.selectedTamanho}</div>
+
+          <div className="item">Massa {pizza.massa.name}</div>
+
+          <div className="item">
+            Por apenas: <span className="price">{formatCurrency(price)}</span>
+          </div>
+
+          <div className="item" style={{ fontWeight: 500 }}>
+            Ganhe {points} pontos
+          </div>
         </div>
-
-        <div className="item">
-          <span className="left">Tamanho:</span>
-
-          <span className="right">{pizza.selectedTamanho}</span>
-        </div>
-
-        <div className="item">
-          <span className="left">Massa:</span>
-
-          <span className="right">{pizza.massa.name}</span>
-        </div>
-      </div>
-    );
-  }
-
-  function renderPizzaPriceDetails() {
-    function renderAdditional(additional: OrderPizzaAdditionals) {
-      const { name, price } = additional;
-
-      return (
-        <div className="item">
-          <span className="left">{name}</span>
-
-          <span className="right">+ {formatCurrency(price)}</span>
-        </div>
-      );
-    }
-
-    return (
-      <div className="pizza-price-wrapper">
-        <span className="total">{formatCurrency(price.total)}</span>
-
-        <div className="price-details">
-          {price.recheio > 0 && (
-            <div className="item">
-              <span className="left">Pizza:</span>
-              <span className="right">{formatCurrency(price.recheio)}</span>
-            </div>
-          )}
-
-          {price.additionals.map((additional) => renderAdditional(additional))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <section className="order-recommendation-container">
-      <div className="top">MINHA PIZZA</div>
-
-      <div className="content">
-        {renderPizzaDetails()}
-        {renderPizzaPriceDetails()}
-      </div>
-    </section>
+      </section>
+    </ButtonBase>
+  ) : (
+    <></>
   );
 };
 

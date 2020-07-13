@@ -7,9 +7,9 @@ import "./styles.scss";
 import orderPizzaRoutes from "./order-pizza.routes";
 import { getAvailablePizzas } from "../Store/Ducks/pizzasDuck";
 
+import OrderRecommendation from "./OrderRecommendation";
 import OrderStepper from "./OrderStepper";
 import OrderSummary from "./OrderSummary";
-import OrderRecommendation from "./OrderRecommendation";
 
 interface Props {}
 
@@ -24,34 +24,36 @@ const OrderPizza: React.FC<Props> = () => {
   }, [dispatch]);
 
   return (
-    <section className="order-pizza-container">
-      <div className="order-pizza-area">
-        <div className="top">
-          <OrderStepper />
-
-          <div className="recommendation-wrapper">
-            <OrderRecommendation />
-          </div>
-        </div>
-
-        <div className="content">
-          <div className="left">
-            {orderPizzaRoutes.map(({ component, exact, path }, i) => (
-              <Route
-                path={`${router.path}${path}`}
-                component={component}
-                key={i}
-                exact={exact}
-              />
-            ))}
-          </div>
-
-          <div className="right">
-            <OrderSummary />
-          </div>
-        </div>
+    <div className="order-pizza-wrapper">
+      <div className="recommendation-wrapper">
+        <OrderRecommendation />
       </div>
-    </section>
+
+      <section className="order-pizza-container">
+        <div className="order-pizza-area">
+          <div className="top">
+            <OrderStepper />
+          </div>
+
+          <div className="content">
+            <div className="left">
+              {orderPizzaRoutes.map(({ component, exact, path }, i) => (
+                <Route
+                  path={`${router.path}${path}`}
+                  component={component}
+                  key={i}
+                  exact={exact}
+                />
+              ))}
+            </div>
+
+            <div className="right">
+              <OrderSummary />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 

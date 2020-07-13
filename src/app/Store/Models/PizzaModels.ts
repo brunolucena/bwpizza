@@ -97,8 +97,11 @@ export interface Recheio {
 export interface SetOrderPizzaDataRequest {
   error?: string;
   loading?: boolean;
-  pizza?: Pizza;
   orderPizzaResponse?: OrderPizzaResponse;
+  pizza?: Pizza;
+  promotionSelected?: boolean;
+  selectedMassa?: Massa | null;
+  selectedTamanho?: TypeTamanhos | "";
 }
 
 /**

@@ -1,5 +1,9 @@
+.order-pizza-wrapper {
+  padding: 20px;
+}
+
 .order-pizza-container {
-  padding: 100px;
+  margin-top: 30px;
 }
 
 .order-pizza-area {
@@ -9,8 +13,6 @@
   border-radius: 3px;
 
   > .top {
-    .recommendation-wrapper {
-    }
   }
 
   > .content {
@@ -20,4 +22,9 @@
     > .right {
     }
   }
+}
+
+.recommendation-wrapper {
+  display: flex;
+  justify-content: center;
 }

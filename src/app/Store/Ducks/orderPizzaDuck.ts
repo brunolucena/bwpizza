@@ -15,6 +15,8 @@ import {
   TypeTamanhos,
 } from "../Models/PizzaModels";
 
+import { State as PizzasState } from "./pizzasDuck";
+
 export const CLEAR_ORDER_PIZZA = "CLEAR_ORDER_PIZZA";
 
 export const ORDER_PIZZA = "ORDER_PIZZA";
@@ -72,6 +74,7 @@ export type Actions =
   | OrderPizzaSuccess
   | SelectMassa
   | SelectTamanho
+  | SetOrderPizzaData
   | ToggleRecheio;
 
 export interface State {
@@ -79,6 +82,7 @@ export interface State {
   loading: boolean;
   orderPizzaResponse: OrderPizzaResponse;
   pizza: Pizza;
+  /** Caso tenha qualquer alteração na pizza, a promoção é retirada */
   promotionSelected: boolean;
   selectedMassa: Massa | null;
   selectedTamanho: TypeTamanhos | "";
@@ -168,6 +172,13 @@ export default function reducer(state = initialState, action: Actions): State {
       };
     }
 
+    case SET_ORDER_PIZZA_DATA: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+
     case TOGGLE_RECHEIO: {
       // Pega os dados do recheio.
       const recheio = action.payload;
@@ -246,6 +257,18 @@ export function selectTamanho(data: TypeTamanhos): SelectTamanho {
 }
 
 /**
+ * Seta dados da redux.
+ */
+export function setOrderPizzaData(
+  data: SetOrderPizzaDataRequest
+): SetOrderPizzaData {
+  return {
+    type: SET_ORDER_PIZZA_DATA,
+    payload: data,
+  };
+}
+
+/**
  * Alterna um tipo de recheio.
  */
 export function toggleRecheio(data: Recheio): ToggleRecheio {
@@ -260,9 +283,23 @@ export function toggleRecheio(data: Recheio): ToggleRecheio {
 /**
  * Retorna um objeto contendo o valor total da pizza e um array
  * com o valor de cada adicional do pedido.
+ * Caso a pizza da promoção esteja selecionada, retorna o valor da promoção.
  */
-export function selectOrderPizzaPrice(state: State): OrderPizzaPrice {
-  const { pizza, selectedTamanho } = state;
+export function selectOrderPizzaPrice(
+  state: State,
+  pizzasState: PizzasState
+): OrderPizzaPrice {
+  const { pizza, promotionSelected, selectedTamanho } = state;
+  const { recommendation } = pizzasState;
+
+  // Se a promoção estiver selecionada, retorna os valores dela.
+  if (promotionSelected) {
+    return {
+      additionals: [],
+      recheio: recommendation.price,
+      total: recommendation.price,
+    };
+  }
 
   // Transforma o array de recheios em um array somente com os preços
   // de cada recheio de acordo com o tamanho selecionado.
